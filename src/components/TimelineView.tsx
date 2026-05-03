@@ -5,7 +5,7 @@ import { Landmark, FileSignature, Megaphone, Vote, CheckSquare } from 'lucide-re
 
 export function TimelineView() {
   const [activeStage, setActiveStage] = React.useState(0);
-  const stageIcons = [Landmark, FileSignature, Megaphone, Vote, CheckSquare];
+  const stageIcons = React.useMemo(() => [Landmark, FileSignature, Megaphone, Vote, CheckSquare], []);
 
   return (
     <div className="max-w-5xl mx-auto flex flex-col gap-6">

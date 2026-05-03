@@ -5,11 +5,13 @@ import { Check, Info } from 'lucide-react';
 export function VoterChecklist() {
   const [items, setItems] = useState(initialChecklist);
 
-  const toggleItem = (id: number) => {
-    setItems(items.map(item => item.id === id ? { ...item, done: !item.done } : item));
-  };
+  const toggleItem = React.useCallback((id: number) => {
+    setItems(prevItems => prevItems.map(item => item.id === id ? { ...item, done: !item.done } : item));
+  }, []);
 
-  const progress = Math.round((items.filter(i => i.done).length / items.length) * 100);
+  const progress = React.useMemo(() => 
+    Math.round((items.filter(i => i.done).length / items.length) * 100)
+  , [items]);
 
   return (
     <div className="max-w-5xl mx-auto grid lg:grid-cols-2 gap-6 items-start">

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
-import { Overview } from './components/Overview';
-import { TimelineView } from './components/TimelineView';
-import { VoterChecklist } from './components/VoterChecklist';
-import { StateInfo } from './components/StateInfo';
-import { AssistantChat } from './components/AssistantChat';
 import { Menu, X } from 'lucide-react';
+
+// Lazy load components for code splitting & better efficiency
+const Overview = React.lazy(() => import('./components/Overview').then(m => ({ default: m.Overview })));
+const TimelineView = React.lazy(() => import('./components/TimelineView').then(m => ({ default: m.TimelineView })));
+const VoterChecklist = React.lazy(() => import('./components/VoterChecklist').then(m => ({ default: m.VoterChecklist })));
+const StateInfo = React.lazy(() => import('./components/StateInfo').then(m => ({ default: m.StateInfo })));
+const AssistantChat = React.lazy(() => import('./components/AssistantChat').then(m => ({ default: m.AssistantChat })));
 
 export default function App() {
   const [activeView, setActiveView] = useState('overview');
@@ -28,7 +30,7 @@ export default function App() {
     }
   };
 
-  const getPageTitle = () => {
+  const pageTitle = React.useMemo(() => {
     const map: Record<string, string> = {
       overview: 'Overview',
       timeline: 'Election Timeline (India)',
@@ -37,7 +39,7 @@ export default function App() {
       assistant: 'Ask Assistant'
     };
     return map[activeView] || 'Overview';
-  };
+  }, [activeView]);
 
   return (
     <div className="flex h-screen overflow-hidden bg-[#f7f6f2] text-[#28251d]">
@@ -63,12 +65,21 @@ export default function App() {
             <Menu size={24} />
           </button>
           <div>
-            <h2 className="text-xl md:text-2xl font-bold leading-tight">{getPageTitle()}</h2>
+            <h2 className="text-xl md:text-2xl font-bold leading-tight">{pageTitle}</h2>
           </div>
         </header>
         
         <div className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8 relative custom-scrollbar">
-          {renderContent()}
+          <React.Suspense fallback={
+            <div className="flex h-full items-center justify-center font-medium text-[#6f6d68]">
+              <div className="animate-pulse flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#01696f]"></div>
+                Loading...
+              </div>
+            </div>
+          }>
+            {renderContent()}
+          </React.Suspense>
         </div>
       </main>
     </div>

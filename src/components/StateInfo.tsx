@@ -6,7 +6,9 @@ import { motion, AnimatePresence } from 'motion/react';
 export function StateInfo() {
   const [selectedStateCode, setSelectedStateCode] = useState(stateData[0].code);
 
-  const selectedState = stateData.find(s => s.code === selectedStateCode) || stateData[0];
+  const selectedState = React.useMemo(() => 
+    stateData.find(s => s.code === selectedStateCode) || stateData[0]
+  , [selectedStateCode]);
 
   return (
     <div className="max-w-4xl mx-auto flex flex-col gap-6">

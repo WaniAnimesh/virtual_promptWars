@@ -9,7 +9,7 @@ interface OverviewProps {
 export function Overview({ setActiveView }: OverviewProps) {
   const [selectedPersona, setSelectedPersona] = useState<number | null>(null);
 
-  const personas = [
+  const personas = React.useMemo(() => [
     {
       title: "First-Time Voter",
       desc: "Coming of age? Learn how to register and download your digital e-EPIC.",
@@ -50,7 +50,7 @@ export function Overview({ setActiveView }: OverviewProps) {
         "Submit and track your application with the reference ID."
       ]
     }
-  ];
+  ], []);
 
   return (
     <div className="max-w-5xl mx-auto flex flex-col gap-6 ">

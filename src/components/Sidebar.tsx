@@ -7,13 +7,13 @@ interface SidebarProps {
 }
 
 export function Sidebar({ activeView, setActiveView }: SidebarProps) {
-  const navItems = [
+  const navItems = React.useMemo(() => [
     { id: 'overview', label: 'Overview', icon: Compass },
     { id: 'timeline', label: 'Timeline', icon: CalendarIcon },
     { id: 'voter', label: 'Voter Checklist', icon: CheckSquare },
     { id: 'state', label: 'State Info', icon: MapPin },
     { id: 'assistant', label: 'Ask Assistant', icon: MessageSquare },
-  ];
+  ], []);
 
   return (
     <aside className={`w-72 bg-[#f9f8f5] border-r border-[#d4d1ca] h-full flex flex-col p-6 flex-shrink-0`}>
